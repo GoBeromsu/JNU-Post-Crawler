@@ -11,7 +11,7 @@ def main():
         issue.createIssue(content, getToday())
     else:
         print("No Content")
-        
+
 
 def getToday():
     return datetime.today().strftime("%Y.%m.%d")

@@ -1,7 +1,7 @@
 from github import Github
 
 
-g = Github("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")
+
 GITHUB_ID = "310o"
 repo_url = "GoBeromsu/JNU-Post-Crawler"
 
