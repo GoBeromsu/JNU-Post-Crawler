@@ -8,6 +8,7 @@ import re
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
+import schedule
 
 def get_credentials():
     try:
@@ -25,14 +26,14 @@ def get_credentials():
         print(f"An error occured while reading credentials: {e}")
         return None
 
-def send_email(subject, message):
+def send_email(subject, message,title ):
     try:
         EMAIL_ADDRESS, EMAIL_PASSWORD = get_credentials()
         
-        print("【MessageEmail송신시작】：" + str(datetime.now()))
+        print("【MessageEmail 송신시작】：" + str(datetime.now()))
         
         msg = MIMEMultipart()
-        msg["Subject"] = "소프트웨어 중심 사업단 공지 등장"
+        msg["Subject"] = "[소프트웨어 중심 사업단 공지] " + title 
         msg["To"] = EMAIL_ADDRESS
         msg["From"] = EMAIL_ADDRESS
         msg.attach(MIMEText(message))
@@ -64,7 +65,7 @@ def check_for_new_posts(url):
             post_title = title_tag.text.replace(".","-")
             url = "https://www.sojoong.kr/www/notice/view/"+  re.compile("[0-9]{3,5}").search(post_url['href']).group() 
             if date_tag.text == today:
-                send_email("New post on website", f"Title: {post_title}\nURL: {url}")
+                send_email("New post on website", f"Title: {post_title}\nURL: {url}",post_title)
             else:
                 # 어차피 최신순으로 불러오니까 상관 break 해도 상관 없다 
                 print(f"{today} Posted time is not matched")
@@ -72,7 +73,8 @@ def check_for_new_posts(url):
     except Exception as e:
         print(f"An error occured: {e}")
 
-
-
-check_for_new_posts("https://www.sojoong.kr/www/notice/")
-
+while(True):
+    schedule.run_pending()
+    schedule.every().day.at("18:00").do(check_for_new_posts,'https://www.sojoong.kr/www/notice/')
+    print(f"실행 중 ... {datetime.now()}")
+    time.sleep(10)
