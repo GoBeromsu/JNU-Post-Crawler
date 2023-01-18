@@ -1,5 +1,13 @@
 # JNU POST CRAWLER
+## To Do List
+
+- 모듈화
+- 코드 리팩토링
+- url 확장 (url과 queryselector 만 주면 긁어오도록)
+
+## 설명
 This code is a web crawler that checks for new posts on the website "https://www.sojoong.kr/www/notice/" and sends an email notification if a new post is found. 
+
 The email notification includes the title of the post and the post's URL.
 
 The code is divided into several functions:
