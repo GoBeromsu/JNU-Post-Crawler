@@ -5,6 +5,43 @@
 - 코드 리팩토링
 - url 확장 (url과 queryselector 만 주면 긁어오도록)
 
+프레임워크 및 기술:
+
+- Python 프로그래밍 언어
+- requests 라이브러리: HTTP 요청을 보내기 위한 라이브러리
+- BeautifulSoup 라이브러리: HTML 및 XML 문서를 파싱하기 위한 라이브러리
+- datetime 라이브러리: 날짜 및 시간을 다루기 위한 라이브러리
+- smtplib 라이브러리: SMTP 서버와 통신하여 이메일을 보내기 위한 라이브러리
+- re 라이브러리: 정규식을 사용하여 문자열을 처리하기 위한 라이브러리
+
+기능:
+
+1. get_credentials(): Gmail 계정의 이메일 주소와 비밀번호를 가져오는 함수
+2. send_email(subject, message): 이메일 알림을 보내는 함수
+3. check_for_new_posts(url): 웹 사이트에서 새 게시물을 확인하는 함수
+4. 정규식을 사용하여 게시물의 ID를 게시물 URL에서 추출하는 기능
+
+상세한 기능 설명:
+
+1. get_credentials():
+- Gmail 계정의 이메일 주소와 비밀번호를 가져오는 함수
+- 환경 변수에 저장된 자격 증명 또는 credentials.txt 파일에서 자격 증명을 가져옴
+- 반환 값: 이메일 주소와 비밀번호를 담은 튜플
+1. send_email(subject, message):
+- 이메일 알림을 보내는 함수
+- smtplib 라이브러리를 사용하여 Gmail 서버에 연결하고, 이메일을 보냄
+- 반환 값: 없음
+1. check_for_new_posts(url):
+- 웹 사이트에서 새 게시물을 확인하는 함수
+- requests 라이브러리를 사용하여 GET 요청을 보내고, BeautifulSoup 라이브러리를 사용하여 HTML 응답을 구문 분석함
+- CSS 선택자를 사용하여 게시물의 제목, 게시일 및 URL을 가져옴
+- datetime 라이브러리를 사용하여 오늘 게시된 게시물인지 확인함
+- 오늘이라면 send_email() 함수를 사용하여 이메일 알림을 보내고, 그렇지 않으면 반복함
+- 반환 값: 없음
+1. 정규식을 사용하여 게시물의 ID를 게시물 URL에서 추출하는 기능:
+- re 라이브러리를 사용하여 게시물 URL에서 게시물 ID를 추출함
+- 반환 값: 게시물 ID
+
 ## 설명
 This code is a web crawler that checks for new posts on the website "https://www.sojoong.kr/www/notice/" and sends an email notification if a new post is found. 
 
