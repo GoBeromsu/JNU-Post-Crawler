@@ -5,6 +5,7 @@
 - 코드 리팩토링
 - url 확장 (url과 queryselector 만 주면 긁어오도록)
 
+## 기술 
 프레임워크 및 기술:
 
 - Python 프로그래밍 언어
