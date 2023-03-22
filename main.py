@@ -16,22 +16,6 @@ from sojoong import *
 SOJOONG = "소프트웨어 중심 사업단"
 JNUSW = "소프트웨어 공학과"
 
-# def get_credentials():
-#     try:
-#         EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
-#         EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-#         if EMAIL_ADDRESS and EMAIL_PASSWORD:
-#             return EMAIL_ADDRESS, EMAIL_PASSWORD
-#         else:
-#             # Read from a file or any other methods
-#             with open("credentials.txt", "r") as f:
-#                 EMAIL_ADDRESS = f.readline().strip()
-#                 EMAIL_PASSWORD = f.readline().strip()
-#             return EMAIL_ADDRESS, EMAIL_PASSWORD
-#     except Exception as e:
-#         print(f"An error occured while reading credentials: {e}")
-#         return None
-
 def sendEmail(message,subTitle ,category):
     try:
         EMAIL_ADDRESS, EMAIL_PASSWORD =os.environ.get('EMAIL_ADDRESS'),os.environ.get('EMAIL_PASSWORD')
