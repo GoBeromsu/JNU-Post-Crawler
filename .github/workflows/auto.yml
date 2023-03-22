@@ -21,12 +21,9 @@ jobs:
           pip install requests
           pip install BeautifulSoup4
           pip install datetime
-          pip install MIMEText 
-          pip install MIMEApplication 
-          pip install MIMEMultipart
+          pip install email
       - name: run
         env:
           EMAIL_ADDRESS: ${{secrets.EMAIL_ADDRESS}}
           EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
-        run: 
-          python run.py
+        run: python run.py
