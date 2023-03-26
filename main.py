@@ -13,9 +13,6 @@ from jnuSW import *
 from sojoong import *
 
 
-SOJOONG = "소프트웨어 중심 사업단"
-JNUSW = "소프트웨어 공학과"
-
 def sendEmail(message,subTitle ,category):
     try:
         EMAIL_ADDRESS, EMAIL_PASSWORD =os.environ.get('EMAIL_ADDRESS'),os.environ.get('EMAIL_PASSWORD')
@@ -39,17 +36,16 @@ def sendEmail(message,subTitle ,category):
         print(f"An error occured: {e}")
 
 def start():
-    category = [SOJOONG,JNUSW]
     posts = [getTodayJnuSW(), getTodaySojoong()]
-    for c,post in zip(category,posts):
+    for post in posts:
         if post ==None:
             continue
         for p in post:
-            subTitle,message =p[0],p[1]
+            category,subTitle,message =p["category"],p["title"],p["url"]
             try:
-                sendEmail(message,subTitle,c)
+                sendEmail(message,subTitle,category)
             except Exception as e:
                 print(f"An error occured while sending email: {e}")
-                sendEmail(f"An error occured while sending email: {e}","Error Occured in sending Message",c)
+                sendEmail(f"An error occured while sending email: {e}","Error Occured in sending Message",category)
 
 start()
