@@ -17,7 +17,7 @@ def getTodaySojoong():
     for tr in soup.findAll('tr', attrs={'class':'notice'}):
         tds = tr.findAll('td')
         date = re.search(r'">(.*?)</td>',str(tds[3])).group(1)
-        if date == today:
+        if date != today:
             break
         text = tds[1]
         title = re.search(r'<strong>(.*?)</strong>', str(text)).group(1)
