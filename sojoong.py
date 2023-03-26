@@ -19,7 +19,13 @@ def getTodayJnuSW():
         postUrl = "https://www.sojoong.kr/www/notice/view/"+postNumber
         if date!=today:
             continue
-        post.append([title,postUrl])
+        post_data = {
+            'category':"소프트웨어 중심 사업단",
+            'title': title,
+            'url': postUrl
+        }
+
+        post.append(post_data)
         print(f"Adding... {date} : {title}")
         return post
 
