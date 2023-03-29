@@ -6,9 +6,7 @@ from datetime import datetime
 # 웹페이지에서 데이터를 가져올 URL
 url = 'https://sw.jnu.ac.kr/sw/8250/subview.do'
 
-today = str(datetime.now().date())
-today.replace("-",".")
-
+today = str(datetime.now().date()).replace("-",".")
 def getTodaySojoong():
     post = []
     response = requests.get(url)

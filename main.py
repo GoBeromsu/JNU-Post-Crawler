@@ -43,9 +43,11 @@ def start():
         for p in post:
             category,subTitle,message =p["category"],p["title"],p["url"]
             try:
+                # print(p)
                 sendEmail(message,subTitle,category)
             except Exception as e:
                 print(f"An error occured while sending email: {e}")
                 sendEmail(f"An error occured while sending email: {e}","Error Occured in sending Message",category)
 
 start()
+# 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
