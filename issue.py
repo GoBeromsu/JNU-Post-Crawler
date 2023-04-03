@@ -1,32 +1,39 @@
-from github import Github
-from datetime import datetime,date,timedelta
+import os
+from datetime import datetime, date, timedelta
 from pytz import timezone
+from github import Github
 
-today = str(datetime.now().date()).replace("-",".")
-yesterday = str(date.today() - timedelta(1)).replace("-",".")
+today = str(datetime.now().date()).replace("-", ".")
+yesterday = str(date.today() - timedelta(1)).replace("-", ".")
 
-
+GITHUB_ACCESS_KEY = os.environ.get("GITHUB_ACCESS_KEY")
 g = Github(GITHUB_ACCESS_KEY)
-repo_name= "GoBeromsu/JNU-Post-Crawler"
-repo = g.get_repo(repo_name)
+repo_url = "GoBeromsu/JNU-Post-Crawler"
 
-def getIssue(repo_url,issue_num):
-    issue = g.get_repo(repo_url).get_issue(number=issue_num)
+def get_repo(repo_url):
+    return g.get_repo(repo_url)
+
+def get_issue(repo_url, issue_num):
+    issue = get_repo(repo_url).get_issue(number=issue_num)
     return issue.body
 
-def updateIssue(repo_url,issue_num,content):
-    issue = g.get_repo(repo_url).get_issue(number=issue_num)
+def update_issue(repo_url, issue_num, content):
+    issue = get_repo(repo_url).get_issue(number=issue_num)
     issue.edit(body=content)
 
-def createIssue(repo_url,content):
-    issue = g.get_repo(repo_url).create_issue(title=today,body=content)
+def create_issue(repo_url, title, content):
+    issue = get_repo(repo_url).create_issue(title=title, body=content)
 
-def checkTodayIssueCreated():
+def check_today_issue_created(repo_url):
+    repo = get_repo(repo_url)
     now = datetime.now(timezone('Asia/Seoul')) - timedelta(1)
     day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    issues = repo.get_issues(state='open', since= day_start)
+    issues = repo.get_issues(state='open', since=day_start)
+    
     for issue in issues:
-        if issue.title != today:
-            return False
-        else:
+        if issue.title == today:
             return True
+    return False
+
+# create_issue(repo_url, today, "이렇게 하는거 맞나?")
+# print(check_today_issue_created(repo_url))
