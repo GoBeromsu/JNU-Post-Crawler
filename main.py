@@ -1,10 +1,11 @@
 import os
 import requests
-from bs4 import BeautifulSoup
+import bs4
 import smtplib
 from datetime import datetime
 import time
 import re
+import yaml
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -12,47 +13,63 @@ from email.mime.multipart import MIMEMultipart
 from jnuSW import *
 from sojoong import *
 from issue import *
+from dotenv import load_dotenv
 
 
-def sendEmail(message, subtitle, category):
-    try:
 
-        EMAIL_ADDRESS, EMAIL_PASSWORD = "gobeumsu@Gmail.com", "vtbkxdgvyoxveloe"
-        print(f"{datetime.now()} Email sending... ")
-        msg = MIMEMultipart()
-        msg["Subject"] = f"[{category}] " + subtitle
-        msg["To"] = EMAIL_ADDRESS
-        msg["From"] = EMAIL_ADDRESS
-        msg.attach(MIMEText(message))
+class EmailSender:
+    def __init__(self, to_addresses):
+        self.to_addresses = to_addresses
+        load_dotenv()
+        self.email_address = os.getenv('EMAIL_ADDRESS')
+        self.email_password = os.getenv('EMAIL_PASSWORD')
+        self.server = smtplib.SMTP("smtp.gmail.com", 587)
 
-        # 메일송신처리
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
+        print("email/password : ",self.email_address, self.email_password)
+    def login(self):
+        self.server.starttls()
 
-        print("Success: Email sent!")
-    except Exception as e:
-        print("Email failed to send.")
-        print(f"An error occured: {e}")
+        self.server.login(self.email_address, self.email_password)
+
+    def send_email(self, message, subtitle, category):
+        try:
+            print(f"{datetime.now()} Email sending... ")
+            msg = MIMEMultipart()
+            msg["Subject"] = f"[{category}] " + subtitle
+            msg["To"] = ', '.join(self.to_addresses)
+            msg["From"] = self.email_address
+            msg.attach(MIMEText(message))
+
+            self.server.send_message(msg)
+            print("Success: Email sent!")
+        except Exception as e:
+            print("Email failed to send.")
+            print(f"An error occured: {e}")
+
+    def close(self):
+        self.server.quit()
 
 
-def start():
-    posts = [getTodayJnuSW(), getTodaySojoong()]
-    # TODO: issue가 있다면 issue를 가져온다
-    # TODO: issue가 없다면, 바로 실행을 하고, issue에 오늘의 데이터를 json 형식으로 입력 한다.
+def process_posts():
+    with open('user.yml') as file:
+        user_data = yaml.full_load(file)
+    to_addresses = user_data['users']
+
+    posts = [get_today_jnuSW(), get_today_sojoong()]
+    email_sender = EmailSender(to_addresses)
+    email_sender.login()
+
     for post in posts:
-        if post == None:
+        if post is None:
             continue
         for p in post:
-            category, subTitle, message = p["category"], p["title"], p["url"]
+            category, subtitle, message = p["category"], p["title"], p["url"]
             try:
-                # print(p)
-                sendEmail(message, subTitle, category)
+                email_sender.send_email(message, subtitle, category)
             except Exception as e:
                 print(f"An error occured while sending email: {e}")
-                sendEmail(f"An error occured while sending email: {e}", "Error Occured in sending Message", category)
+                email_sender.send_email(f"An error occured while sending email: {e}", "Error Occured in sending Message", category)
+    email_sender.close()
 
-
-start()
+if __name__ == "__main__":
+    process_posts()
