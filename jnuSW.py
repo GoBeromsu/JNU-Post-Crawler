@@ -7,7 +7,7 @@ from datetime import datetime
 url = 'https://sw.jnu.ac.kr/sw/8250/subview.do'
 
 today = str(datetime.now().date()).replace("-",".")
-def getTodaySojoong():
+def get_today_sojoong():
     post = []
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
