@@ -22,6 +22,8 @@ jobs:
           pip install BeautifulSoup4
           pip install datetime
           pip install PyGithub
+          pip install pyyaml
+          pip install python-dotenv 
       - name: run
         env:
           EMAIL_ADDRESS: ${{secrets.EMAIL_ADDRESS}}
