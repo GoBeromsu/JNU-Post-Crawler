@@ -22,7 +22,7 @@ jobs:
           pip install BeautifulSoup4
           pip install datetime
           pip install PyGithub
-          pip install yaml
+          pip install pyyaml
       - name: run
         env:
           EMAIL_ADDRESS: ${{secrets.EMAIL_ADDRESS}}
