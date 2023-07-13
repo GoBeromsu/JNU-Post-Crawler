@@ -17,7 +17,7 @@ def get_today_jnuSW():
         href = re.search(r'<a\s.*?href=[\'"]?([^\'" >]+)',str(tr)).group(1)
         postNumber= re.compile("[0-9]{3,5}").search(href).group()
         postUrl = "https://www.sojoong.kr/www/notice/view/"+postNumber
-        if date==today:
+        if date!=today:
             continue
         post_data = {
             'category':"소프트웨어 중심 사업단",
