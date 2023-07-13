@@ -3,9 +3,6 @@ name: Auto Post Mail
 on:
   schedule:
     - cron: "0 14 * * * "
-  push:
-    branches:
-      - main
 jobs:
   build:
     runs-on: ubuntu-latest
