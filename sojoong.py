@@ -7,7 +7,7 @@ today = str(datetime.now().date()).replace("-",".")
 
 def get_today_jnuSW():
     post = []
-    response = requests.get(url)
+    response = requests.get(url,verify=False)
     soup = BeautifulSoup(response.text, 'html.parser')
     t = soup.findAll('td',attrs={"class":"alignLeft"})
 
