@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from datetime import datetime
-url = 'https://www.sojoong.kr/www/notice/'
+url = 'www.sojoong.kr/www/notice/'
 today = str(datetime.now().date()).replace("-",".")
 
 def get_today_jnuSW():
